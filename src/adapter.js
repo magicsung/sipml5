@@ -6,6 +6,17 @@
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
  */
+
+var nativeRTCPeerConnection = null;
+var nativeRTCIceCandidate = null;
+var nativeRTCSessionDescription = null;
+var nativeGetUserMedia = null;
+if (!!RTCPeerConnection) {
+  nativeRTCPeerConnection = RTCPeerConnection;
+  nativeRTCIceCandidate = RTCIceCandidate;
+  nativeRTCSessionDescription = RTCSessionDescription;
+  nativeGetUserMedia = navigator.getUserMedia;
+}
 var RTCPeerConnection = null;
 var getUserMedia = null;
 var attachMediaStream = null;
@@ -252,7 +263,7 @@ if (navigator.mozGetUserMedia) {
     function getPlugin() {
         return document.getElementById('WebrtcEverywherePluginId');
     }
-    
+
     var installPlugin = function () {
         if (document.getElementById("WebrtcEverywherePluginId")) {
             return;
@@ -469,5 +480,13 @@ if (navigator.mozGetUserMedia) {
     // http://www.w3.org/TR/webrtc/#session-description-model
     RTCSessionDescription = function (RTCSessionDescriptionInit) {
         return getPlugin().createSessionDescription(RTCSessionDescriptionInit);
+    }
+
+    if (!!nativeRTCPeerConnection) {
+      RTCPeerConnection = nativeRTCPeerConnection;
+      RTCIceCandidate = nativeRTCIceCandidate;
+      RTCSessionDescription = nativeRTCSessionDescription;
+      getUserMedia = nativeGetUserMedia.bind(navigator);
+      navigator.getUserMedia = getUserMedia;
     }
 }

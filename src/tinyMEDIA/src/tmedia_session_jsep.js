@@ -639,7 +639,7 @@ tmedia_session_jsep01.prototype.__get_lo = function () {
         }
         var o_iceServers = this.ao_ice_servers;
         if (!o_iceServers) { // defines default ICE servers only if none exist (because WebRTC requires ICE)
-            // HACK Nightly 21.0a1 (2013-02-18): 
+            // HACK Nightly 21.0a1 (2013-02-18):
             // - In RTCConfiguration passed to RTCPeerConnection constructor: FQDN not yet implemented (only IP-#s). Omitting "stun:stun.l.google.com:19302"
             // - CHANGE-REQUEST not supported when using "numb.viagenie.ca"
             // - (stun/ERR) Missing XOR-MAPPED-ADDRESS when using "stun.l.google.com"
@@ -649,7 +649,7 @@ tmedia_session_jsep01.prototype.__get_lo = function () {
             // "23.21.150.121" is the default STUN server used in Nightly
             o_iceServers = tmedia_session_jsep01.mozThis
                 ? [{ url: 'stun:23.21.150.121:3478' }, { url: 'stun:216.93.246.18:3478' }, { url: 'stun:66.228.45.110:3478' }, { url: 'stun:173.194.78.127:19302' }]
-                : [{ url: 'stun:stun.l.google.com:19302' }, { url: 'stun:stun.counterpath.net:3478' }, { url: 'stun:numb.viagenie.ca:3478' }];
+                : [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun.counterpath.net:3478' }, { urls: 'stun:numb.viagenie.ca:3478' }];
         }
         try { tsk_utils_log_info("ICE servers:" + JSON.stringify(o_iceServers)); } catch (e) { }
         this.o_pc = new window.RTCPeerConnection(
@@ -659,7 +659,7 @@ tmedia_session_jsep01.prototype.__get_lo = function () {
         this.o_pc.onicecandidate = tmedia_session_jsep01.mozThis ? tmedia_session_jsep01.onIceCandidate : function (o_event) { tmedia_session_jsep01.onIceCandidate(o_event, This); };
         this.o_pc.onnegotiationneeded = tmedia_session_jsep01.mozThis ? tmedia_session_jsep01.onNegotiationNeeded : function (o_event) { tmedia_session_jsep01.onNegotiationNeeded(o_event, This); };
         this.o_pc.onsignalingstatechange = tmedia_session_jsep01.mozThis ? tmedia_session_jsep01.onSignalingstateChange : function (o_event) { tmedia_session_jsep01.onSignalingstateChange(o_event, This); };
-                
+
         this.subscribe_stream_events();
     }
 
@@ -736,4 +736,3 @@ tmedia_session_jsep01.prototype.__set_ro = function (o_sdp, b_is_offer) {
 
     return 0;
 }
-
